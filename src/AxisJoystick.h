@@ -39,18 +39,18 @@ class AxisJoystick final : public Joystick {
 			is considered to be on.
 		*/
 		static const int AXIS_DEVIATION = 100;
+		static const int BUTTON_DEVIATION = 30;
 		// Min value of Arduino ADC.
 		static const int ADC_MIN = 0;
 		// Max value of Arduino ADC.
-		static const int ADC_MAX = 1023;
-		// Signal when the joystick button is pressed.
-		static const int BUTTON_PRESS_SIGNAL = LOW;
+		static const int ADC_MAX = 1023;		
 
-		int SW_pin;
 		int VRx_pin;
 		int VRy_pin;
 		int min = ADC_MIN + AXIS_DEVIATION;
 		int max = ADC_MAX - AXIS_DEVIATION;
+		int maxSW = ADC_MAX - BUTTON_DEVIATION;
+		
 
 		/**
 			The value for the temporary storage
@@ -63,11 +63,10 @@ class AxisJoystick final : public Joystick {
 		/**
 			Constructor
 
-			@param SW_pin - a digital port pin of a button.
 			@param VRx_pin - a analog port pin of X-axis.
 			@param VRy_pin - a analog port pin of Y-axis.
 		*/
-		AxisJoystick(int SW_pin, int VRx_pin, int VRy_pin);
+		AxisJoystick(int VRx_pin, int VRy_pin);
 
 		/**
 			Single reading of the joystick controller.
@@ -98,9 +97,9 @@ class AxisJoystick final : public Joystick {
 
 			@return true - button is pressed,
 			false - button is not pressed.
-		*/
+		*/	
 		boolean isPress() override;
-
+		
 		/**
 			Checks if the joystick is pressed up (Y-axis).
 
@@ -160,15 +159,9 @@ class AxisJoystick final : public Joystick {
 			@return VRy value.
 		*/
 		int readVRy() override;
+	
 
-		/**
-			Reads the SW pin value.
-
-			@return SW value.
-		*/
-		int readSW() override;
-
-		/**
+	    /**
 			Joystick axes calibration.
 
 			@param low - the lower bound of the values range (default, 100);
@@ -189,10 +182,16 @@ class AxisJoystick final : public Joystick {
 		*/
 		void calibrate(int adcMin, int adcMax, int deviation) override;
 
+
+
+
+		void calibrate(int adcMin, int adcMax, int deviation, int switchDeviation) override;
+
 	private:
 		inline boolean isLow(int value);
-
 		inline boolean isHigh(int value);
+		inline boolean isSwitchHigh(int value);
+
 };
 
 #endif

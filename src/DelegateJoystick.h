@@ -63,8 +63,6 @@ class DelegateJoystick : public Joystick {
 
 		int readVRy() override;
 
-		int readSW() override;
-
 		void calibrate(int low, int high) override;
 
 		void calibrate(int adcMin, int adcMax, int deviation) override;

@@ -141,13 +141,6 @@ class Joystick {
 		virtual int readVRy() = 0;
 
 		/**
-			Reads the SW pin value.
-
-			@return SW value.
-		*/
-		virtual int readSW() = 0;
-
-		/**
 			Joystick axes calibration.
 
 			@param low - the lower bound of the values range;
@@ -167,6 +160,9 @@ class Joystick {
 			axis value >= (high - deviation).
 		*/
 		virtual void calibrate(int adcMin, int adcMax, int deviation) = 0;
+
+
+		virtual void calibrate(int adcMin, int adcMax, int deviation; int switchDeviation) = 0;
 };
 
 #endif

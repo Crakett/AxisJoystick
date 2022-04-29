@@ -5,11 +5,9 @@
 #include "AxisJoystick.h"
 
 AxisJoystick::AxisJoystick(
-	const int SW_pin,
 	const int VRx_pin,
 	const int VRy_pin
 ) {
-	pinMode(this->SW_pin = SW_pin, INPUT_PULLUP);
 	pinMode(this->VRx_pin = VRx_pin, INPUT);
 	pinMode(this->VRy_pin = VRy_pin, INPUT);
 }
@@ -37,7 +35,7 @@ Joystick::Move AxisJoystick::multipleRead() {
 }
 
 boolean AxisJoystick::isPress() {
-	return readSW() == BUTTON_PRESS_SIGNAL;
+	return isSwitchHigh(readVRx());
 }
 
 boolean AxisJoystick::isUp() {
@@ -64,10 +62,6 @@ int AxisJoystick::readVRy() {
 	return analogRead(this->VRy_pin);
 }
 
-int AxisJoystick::readSW() {
-	return digitalRead(this->SW_pin);
-}
-
 int AxisJoystick::xAxis() {
 	return readVRx();
 }
@@ -81,13 +75,13 @@ void AxisJoystick::calibrate(const int low, const int high) {
 	this->max = high;
 }
 
-void AxisJoystick::calibrate(
-	const int adcMin, const int adcMax, const int deviation
-) {
-	calibrate(
-		adcMin + deviation,
-		adcMax - deviation
-	);
+void AxisJoystick::calibrate(const int adcMin, const int adcMax, const int deviation) {
+	calibrate(adcMin + deviation, adcMax - deviation);
+}
+
+void AxisJoystick::calibrate(const int adcMin, const int adcMax, const int deviation, const int switchDeviation) {
+	calibrate(adcMin + deviation, adcMax - deviation);
+	this->maxSW = adcMax - switchDeviation;
 }
 
 inline boolean AxisJoystick::isLow(const int value) {
@@ -97,3 +91,13 @@ inline boolean AxisJoystick::isLow(const int value) {
 inline boolean AxisJoystick::isHigh(const int value) {
 	return (value >= this->max);
 }
+
+inline boolean AxisJoystick::isSwitchHigh(const int value) {
+	return (value >= this->maxSW);
+}
+
+
+
+
+
+

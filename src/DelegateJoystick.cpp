@@ -56,10 +56,6 @@ int DelegateJoystick::readVRy() {
 	return this->origin->readVRy();
 }
 
-int DelegateJoystick::readSW() {
-	return this->origin->readSW();
-}
-
 void DelegateJoystick::calibrate(const int low, const int high) {
 	this->origin->calibrate(low, high);
 }
