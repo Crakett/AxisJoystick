@@ -162,7 +162,7 @@ class Joystick {
 		virtual void calibrate(int adcMin, int adcMax, int deviation) = 0;
 
 
-		virtual void calibrate(int adcMin, int adcMax, int deviation; int switchDeviation) = 0;
+		virtual void calibrate(int adcMin, int adcMax, int deviation, int switchDeviation) = 0;
 };
 
 #endif
